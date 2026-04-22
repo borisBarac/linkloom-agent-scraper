@@ -1,4 +1,4 @@
-import type { Browser } from "puppeteer";
+import type { Browser } from "playwright";
 import { FRAME_TIMEOUT, PAGE_LOAD_TIMEOUT } from "../app_config";
 import { cleanHtmlToMarkdown } from "./data_processing/conversion/html_converter";
 import { convertPdfToMarkdown } from "./data_processing/conversion/pdf_converter";
@@ -23,7 +23,7 @@ const processHtmlUrl = async (url: string): Promise<string> => {
 
     const renderResult = await renderPage(browser, url, {
       timeout: PAGE_LOAD_TIMEOUT,
-      waitUntil: ["domcontentloaded"],
+      waitUntil: "domcontentloaded",
       frames: {
         enabled: false,
         timeout: FRAME_TIMEOUT,

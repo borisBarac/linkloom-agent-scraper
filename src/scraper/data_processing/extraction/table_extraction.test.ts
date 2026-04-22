@@ -1,5 +1,5 @@
 import { describe, expect, mock, test } from "bun:test";
-import type { Browser, Page } from "puppeteer";
+import type { Browser, Page } from "playwright";
 import {
   extractTableData,
   extractTableDataFromPage,
@@ -187,7 +187,7 @@ describe("extractTableData", () => {
 
     expect(mockBrowser.newPage).toHaveBeenCalledTimes(1);
     expect(mockPage.goto).toHaveBeenCalledWith("https://example.com", {
-      waitUntil: "networkidle2",
+      waitUntil: "networkidle",
     });
     expect(mockPage.evaluate).toHaveBeenCalledWith(
       expect.any(Function),
@@ -321,7 +321,7 @@ describe("extractTableData", () => {
     await extractTableData(mockBrowser, "https://spa-app.com", "table");
 
     expect(mockPage.goto).toHaveBeenCalledWith("https://spa-app.com", {
-      waitUntil: "networkidle2",
+      waitUntil: "networkidle",
     });
   });
 });

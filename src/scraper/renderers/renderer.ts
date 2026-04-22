@@ -1,17 +1,19 @@
-import type { Browser, Frame, Page, PuppeteerLifeCycleEvent } from "puppeteer";
-import puppeteer from "puppeteer-extra";
+import { Camoufox } from "camoufox-js";
+import type { Browser, Frame, Page } from "playwright";
+
+type LoadState = "domcontentloaded" | "load" | "networkidle" | "commit";
 
 type FrameOptions = {
   enabled?: boolean;
   timeout?: number;
   waitForDynamic?: number;
   requiredSelector?: string;
-  waitUntil?: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[];
+  waitUntil?: LoadState;
 };
 
 type RenderOptions = {
   timeout?: number;
-  waitUntil?: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[];
+  waitUntil?: LoadState;
   viewport?: {
     width: number;
     height: number;
@@ -77,7 +79,7 @@ const waitForAllIframes = async (
     }
 
     try {
-      if (waitUntil?.includes("domcontentloaded")) {
+      if (waitUntil === "domcontentloaded") {
         await frame
           .waitForFunction(
             () =>
@@ -98,7 +100,7 @@ const waitForAllIframes = async (
 
       if (requiredSelector) {
         await frame.waitForSelector(requiredSelector, {
-          visible: true,
+          state: "visible",
           timeout: Math.min(remainingTime, 5000),
         });
       }
@@ -113,12 +115,8 @@ const waitForAllIframes = async (
 };
 
 export const initialize = async (): Promise<Browser> => {
-  const browserInstance = await puppeteer.launch({
+  const browserInstance = await Camoufox({
     headless: true,
-    args: [
-      // https://stackoverflow.com/questions/57463616/disable-dev-shm-usage-does-not-resolve-the-chrome-crash-issue-in-docker
-      "--disable-dev-shm-usage", // we need this one for docker
-    ],
   });
   return browserInstance;
 };
@@ -133,12 +131,12 @@ export const renderPage = async (
 
   try {
     if (options.viewport) {
-      await page.setViewport(options.viewport);
+      await page.setViewportSize(options.viewport);
     }
 
     const response = await page.goto(url, {
       timeout: options.timeout ?? 30000,
-      waitUntil: options.waitUntil ?? ["domcontentloaded", "networkidle0"],
+      waitUntil: options.waitUntil ?? "networkidle",
     });
 
     if (!response) {

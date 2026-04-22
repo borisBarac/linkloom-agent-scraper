@@ -1,4 +1,4 @@
-import type { Browser, Page } from "puppeteer";
+import type { Browser, Page } from "playwright";
 
 export type TableData = { [header: string]: string };
 
@@ -48,7 +48,7 @@ export const extractTableData = async (
   let page: Page | undefined;
   try {
     page = await browser.newPage();
-    await page.goto(url, { waitUntil: "networkidle2" });
+    await page.goto(url, { waitUntil: "networkidle" });
     return extractTableDataFromPage(page, tableSelector);
   } finally {
     if (page && typeof page.close === "function") {

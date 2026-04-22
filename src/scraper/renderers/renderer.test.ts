@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
-import type { Browser } from "puppeteer";
+import type { Browser } from "playwright";
 import { initialize, renderPage } from "./renderer";
 
 let browserInstance: Browser | null = null;
