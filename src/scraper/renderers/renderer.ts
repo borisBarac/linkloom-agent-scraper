@@ -1,5 +1,6 @@
 import { Camoufox } from "camoufox-js";
 import type { Browser, Frame, Page } from "playwright";
+import { PROXY_URL } from "../../app_config";
 
 type LoadState = "domcontentloaded" | "load" | "networkidle" | "commit";
 
@@ -114,9 +115,11 @@ const waitForAllIframes = async (
   return loadedFrames;
 };
 
-export const initialize = async (): Promise<Browser> => {
+export const initialize = async (proxy?: string): Promise<Browser> => {
+  const resolvedProxy = proxy ?? PROXY_URL;
   const browserInstance = await Camoufox({
     headless: true,
+    ...(resolvedProxy ? { proxy: resolvedProxy } : {}),
   });
   return browserInstance;
 };

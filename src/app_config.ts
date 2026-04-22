@@ -18,9 +18,11 @@ export const config = {
     frame: getEnvTimeout(Bun.env.FRAME_TIMEOUT, 5000),
     pdfDownload: getEnvTimeout(Bun.env.PDF_DOWNLOAD_TIMEOUT, 30000),
   },
+  proxyUrl: Bun.env.PROXY_URL || undefined,
 } as const;
 
 export const TEMP_DIR_PATH = join(tmpdir(), config.fileManager.tempDirName);
 export const PAGE_LOAD_TIMEOUT = config.timeouts.pageLoad;
 export const FRAME_TIMEOUT = config.timeouts.frame;
 export const PDF_DOWNLOAD_TIMEOUT = config.timeouts.pdfDownload;
+export const PROXY_URL = config.proxyUrl;
