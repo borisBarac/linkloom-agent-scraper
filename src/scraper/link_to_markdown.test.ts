@@ -11,12 +11,18 @@ describe("convertLinkToMarkdown", () => {
 
     it("should throw error for invalid URL format", async () => {
       expect(convertLinkToMarkdown("not-a-url")).rejects.toThrow(ScrapperError);
-      expect(convertLinkToMarkdown("ftp://invalid")).rejects.toThrow(ScrapperError);
+      expect(convertLinkToMarkdown("ftp://invalid")).rejects.toThrow(
+        ScrapperError,
+      );
     });
 
     it("should throw error for null/undefined input", async () => {
-      expect(convertLinkToMarkdown(null as any)).rejects.toThrow(ScrapperError);
-      expect(convertLinkToMarkdown(undefined as any)).rejects.toThrow(ScrapperError);
+      expect(convertLinkToMarkdown(null as unknown as string)).rejects.toThrow(
+        ScrapperError,
+      );
+      expect(
+        convertLinkToMarkdown(undefined as unknown as string),
+      ).rejects.toThrow(ScrapperError);
     });
   });
 
@@ -51,7 +57,7 @@ describe("convertLinkToMarkdown", () => {
       const invalidUrls = ["not-a-url", "", null, undefined];
 
       invalidUrls.forEach((url) => {
-        expect(isPdfUrl(url as any)).toBe(false);
+        expect(isPdfUrl(url as unknown as string)).toBe(false);
       });
     });
   });
@@ -88,7 +94,8 @@ describe("convertLinkToMarkdown", () => {
 
   describe("PDF processing", () => {
     it("should process PDF files when available", async () => {
-      const pdfUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+      const pdfUrl =
+        "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
 
       try {
         const result = await convertLinkToMarkdown(pdfUrl);
@@ -97,7 +104,10 @@ describe("convertLinkToMarkdown", () => {
         expect(result.length).toBeGreaterThan(0);
       } catch (error) {
         if (error instanceof ScrapperError) {
-          expect(error.code).toBeOneOf(["ERR_HTTP_REQUEST_FAILED", "PDF_MARKDOWN_CONVERSION_FAILED"]);
+          expect(error.code).toBeOneOf([
+            "ERR_HTTP_REQUEST_FAILED",
+            "PDF_MARKDOWN_CONVERSION_FAILED",
+          ]);
         } else {
           throw error;
         }

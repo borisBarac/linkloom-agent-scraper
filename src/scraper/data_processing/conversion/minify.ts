@@ -14,6 +14,8 @@ export const minifyHTML = (html: string): string => {
       // Remove whitespace at the start and end
       .trim()
       // Collapse multiple spaces/newlines/tabs to single space in text content
-      .replace(/(?<=>)([^<]+)(?=<)/g, (match) => match.replace(/\s+/g, " ").trim())
+      .replace(/(?<=>)([^<]+)(?=<)/g, (match) =>
+        match.replace(/\s+/g, " ").trim(),
+      )
   );
 };

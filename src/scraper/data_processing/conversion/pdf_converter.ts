@@ -24,13 +24,19 @@ type TextItem = {
 
 export const convertPdfToText = async (buffer: Buffer): Promise<string> => {
   return new Promise((resolve, reject) => {
-    pdfExtract.extractBuffer(buffer, {}, (err: Error | null, data?: PDFExtractResult) => {
-      if (err) return reject(err);
-      if (!data) return reject(new Error("No data extracted"));
+    pdfExtract.extractBuffer(
+      buffer,
+      {},
+      (err: Error | null, data?: PDFExtractResult) => {
+        if (err) return reject(err);
+        if (!data) return reject(new Error("No data extracted"));
 
-      const fullText = data.pages.map((page) => page.content.map((item) => item.str).join(" ")).join("\n\n");
-      resolve(fullText);
-    });
+        const fullText = data.pages
+          .map((page) => page.content.map((item) => item.str).join(" "))
+          .join("\n\n");
+        resolve(fullText);
+      },
+    );
   });
 };
 
@@ -169,18 +175,25 @@ const elementsToMarkdown = (elements: PdfElement[]): string => {
 export const convertPdfToMarkdown = async (buffer: Buffer): Promise<string> => {
   try {
     const pdfData = await new Promise<PDFExtractResult>((resolve, reject) => {
-      pdfExtract.extractBuffer(buffer, {}, (err: Error | null, data?: PDFExtractResult) => {
-        if (err) return reject(err);
-        if (!data) return reject(new Error("No data extracted"));
-        resolve(data);
-      });
+      pdfExtract.extractBuffer(
+        buffer,
+        {},
+        (err: Error | null, data?: PDFExtractResult) => {
+          if (err) return reject(err);
+          if (!data) return reject(new Error("No data extracted"));
+          resolve(data);
+        },
+      );
     });
 
     const structuredElements = analyzePdfStructure(pdfData);
     const markdown = elementsToMarkdown(structuredElements);
 
     if (!markdown || markdown.trim().length === 0) {
-      throw new ScrapperError("PDF_MARKDOWN_CONVERSION_FAILED", "PDF conversion resulted in empty markdown");
+      throw new ScrapperError(
+        "PDF_MARKDOWN_CONVERSION_FAILED",
+        "PDF conversion resulted in empty markdown",
+      );
     }
 
     return markdown;
@@ -190,6 +203,9 @@ export const convertPdfToMarkdown = async (buffer: Buffer): Promise<string> => {
     }
 
     const errorMessage = error instanceof Error ? error.message : String(error);
-    throw new ScrapperError("PDF_MARKDOWN_CONVERSION_FAILED", `Failed to convert PDF to markdown: ${errorMessage}`);
+    throw new ScrapperError(
+      "PDF_MARKDOWN_CONVERSION_FAILED",
+      `Failed to convert PDF to markdown: ${errorMessage}`,
+    );
   }
 };

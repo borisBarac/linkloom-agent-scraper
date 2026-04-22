@@ -5,5 +5,10 @@ export * as linkExtraction from "./scraper/data_processing/extraction/link_extra
 export * as tableExtraction from "./scraper/data_processing/extraction/table_extraction";
 export { convertLinkToMarkdown } from "./scraper/link_to_markdown";
 export * as renderers from "./scraper/renderers";
-export { type ErrorCodeType, isScrapperError, ScrapperError, type ScrapperErrorType } from "./scraper/types/internal";
+export {
+  type ErrorCodeType,
+  isScrapperError,
+  ScrapperError,
+  type ScrapperErrorType,
+} from "./scraper/types/internal";
 export * as fileManager from "./scraper/util/file_manager";

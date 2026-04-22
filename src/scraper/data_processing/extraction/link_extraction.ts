@@ -18,7 +18,9 @@ const normalizeUrl = (url: URL): string => {
 
   // Sort query parameters for deterministic comparison
   const sortedParams = new URLSearchParams();
-  const params = Array.from(normalized.searchParams.entries()).sort(([a], [b]) => a.localeCompare(b));
+  const params = Array.from(normalized.searchParams.entries()).sort(
+    ([a], [b]) => a.localeCompare(b),
+  );
 
   for (const [key, value] of params) {
     sortedParams.append(key, value);
@@ -90,7 +92,9 @@ export function checkHostname(name: string): boolean {
   return true;
 }
 
-export const extractDownloadLinksFromHtml = async (htmlContent: string): Promise<string[]> => {
+export const extractDownloadLinksFromHtml = async (
+  htmlContent: string,
+): Promise<string[]> => {
   const dom = new JSDOM(htmlContent);
   const document = dom.window.document;
 
@@ -98,7 +102,7 @@ export const extractDownloadLinksFromHtml = async (htmlContent: string): Promise
   const uniqueLinks = new Set<string>();
 
   // Process links directly into the Set
-  Array.from(refs).forEach((a: any) => {
+  Array.from(refs).forEach((a: HTMLAnchorElement) => {
     const link = a.href;
     if (link.startsWith("http") || link.startsWith("https")) {
       try {

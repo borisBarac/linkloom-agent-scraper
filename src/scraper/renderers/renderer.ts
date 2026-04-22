@@ -33,19 +33,31 @@ type RenderResult = {
   frameCount: number;
 };
 
-const waitForAllIframes = async (page: Page, options: FrameOptions = {}): Promise<Frame[]> => {
-  const { timeout = 20000, waitForDynamic = 2000, requiredSelector, waitUntil } = options;
+const waitForAllIframes = async (
+  page: Page,
+  options: FrameOptions = {},
+): Promise<Frame[]> => {
+  const {
+    timeout = 20000,
+    waitForDynamic = 2000,
+    requiredSelector,
+    waitUntil,
+  } = options;
 
   const startTime = Date.now();
   const loadedFrames: Frame[] = [];
 
-  const hasIframes = await page.evaluate(() => document.querySelectorAll("iframe").length > 0);
+  const hasIframes = await page.evaluate(
+    () => document.querySelectorAll("iframe").length > 0,
+  );
 
   if (!hasIframes) {
     if (waitForDynamic > 0) {
       await new Promise((resolve) => setTimeout(resolve, waitForDynamic));
 
-      const hasIframesNow = await page.evaluate(() => document.querySelectorAll("iframe").length > 0);
+      const hasIframesNow = await page.evaluate(
+        () => document.querySelectorAll("iframe").length > 0,
+      );
 
       if (!hasIframesNow) {
         return loadedFrames;
@@ -67,13 +79,20 @@ const waitForAllIframes = async (page: Page, options: FrameOptions = {}): Promis
     try {
       if (waitUntil?.includes("domcontentloaded")) {
         await frame
-          .waitForFunction(() => document.readyState === "interactive" || document.readyState === "complete", {
-            timeout: Math.min(remainingTime, 5000),
-          })
+          .waitForFunction(
+            () =>
+              document.readyState === "interactive" ||
+              document.readyState === "complete",
+            {
+              timeout: Math.min(remainingTime, 5000),
+            },
+          )
           .catch(() => {});
       } else {
         await frame
-          .waitForFunction(() => document.readyState === "complete", { timeout: Math.min(remainingTime, 5000) })
+          .waitForFunction(() => document.readyState === "complete", {
+            timeout: Math.min(remainingTime, 5000),
+          })
           .catch(() => {});
       }
 
@@ -135,7 +154,10 @@ export const renderPage = async (
       return await page.content();
     }
 
-    const frames = await waitForAllIframes(page, { ...frameOptions, waitUntil: options.waitUntil });
+    const frames = await waitForAllIframes(page, {
+      ...frameOptions,
+      waitUntil: options.waitUntil,
+    });
     const frameContents: FrameContent[] = [];
 
     for (const frame of frames) {

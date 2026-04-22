@@ -31,14 +31,21 @@ describe("Renderer", () => {
   }, 15_000);
 
   test("should render page without frames by default", async () => {
-    const result = await renderPage(browserInstance as Browser, "https://pptr.dev");
+    const result = await renderPage(
+      browserInstance as Browser,
+      "https://pptr.dev",
+    );
 
     expect(typeof result).toBe("string");
     expect(result).toContain("<!DOCTYPE html>");
   }, 15_000);
 
   test("should render page with frames enabled", async () => {
-    const result = await renderPage(browserInstance as Browser, "https://pptr.dev", { frames: { enabled: true } });
+    const result = await renderPage(
+      browserInstance as Browser,
+      "https://pptr.dev",
+      { frames: { enabled: true } },
+    );
 
     expect(typeof result).toBe("object");
     if (typeof result === "object") {
@@ -65,7 +72,10 @@ describe("Renderer", () => {
   }, 30_000);
 
   test("should render a page", async () => {
-    const result = await renderPage(browserInstance as Browser, "https://pptr.dev");
+    const result = await renderPage(
+      browserInstance as Browser,
+      "https://pptr.dev",
+    );
 
     if (typeof result === "string") {
       expect(result).toContain("<!DOCTYPE html>");
@@ -77,9 +87,13 @@ describe("Renderer", () => {
   });
 
   test("should handle custom viewport", async () => {
-    const result = await renderPage(browserInstance as Browser, "https://pptr.dev", {
-      viewport: { width: 1920, height: 1080 },
-    });
+    const result = await renderPage(
+      browserInstance as Browser,
+      "https://pptr.dev",
+      {
+        viewport: { width: 1920, height: 1080 },
+      },
+    );
 
     if (typeof result === "string") {
       expect(result).toContain("<!DOCTYPE html>");
@@ -89,9 +103,13 @@ describe("Renderer", () => {
   });
 
   test("should validate viewport dimensions", async () => {
-    const result = await renderPage(browserInstance as Browser, "https://pptr.dev", {
-      viewport: { width: 1920, height: 1080 },
-    });
+    const result = await renderPage(
+      browserInstance as Browser,
+      "https://pptr.dev",
+      {
+        viewport: { width: 1920, height: 1080 },
+      },
+    );
 
     if (typeof result === "string") {
       expect(result).toContain("<!DOCTYPE html>");
@@ -103,10 +121,14 @@ describe("Renderer", () => {
   });
 
   test("should render page with domcontentloaded", async () => {
-    const result = await renderPage(browserInstance as Browser, "https://pptr.dev", {
-      waitUntil: "domcontentloaded",
-      frames: { enabled: true, waitUntil: "domcontentloaded" },
-    });
+    const result = await renderPage(
+      browserInstance as Browser,
+      "https://pptr.dev",
+      {
+        waitUntil: "domcontentloaded",
+        frames: { enabled: true, waitUntil: "domcontentloaded" },
+      },
+    );
 
     expect(typeof result).toBe("object");
     if (typeof result === "object") {

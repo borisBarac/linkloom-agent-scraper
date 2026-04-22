@@ -1,5 +1,9 @@
 import { describe, expect, it, test } from "bun:test";
-import { checkProtocol, extractDownloadLinksFromHtml, extractLinks } from "./link_extraction";
+import {
+  checkProtocol,
+  extractDownloadLinksFromHtml,
+  extractLinks,
+} from "./link_extraction";
 
 test("extracts no links from empty text", () => {
   const result = extractLinks("");
@@ -22,8 +26,12 @@ test("extracts single FTP link", () => {
 });
 
 test("extracts single FILE link", () => {
-  const result = extractLinks("Open file://files.example.com//documents/report.pdf");
-  expect(result).toEqual([{ url: "file://files.example.com//documents/report.pdf", type: "PDF" }]);
+  const result = extractLinks(
+    "Open file://files.example.com//documents/report.pdf",
+  );
+  expect(result).toEqual([
+    { url: "file://files.example.com//documents/report.pdf", type: "PDF" },
+  ]);
 });
 
 test("extracts PDF link with .pdf extension", () => {
@@ -38,7 +46,9 @@ test("extracts PDF link with .PDF uppercase extension", () => {
 
 test("identifies page link even with pdf in path", () => {
   const result = extractLinks("Not PDF: https://example.com/pdf-docs");
-  expect(result).toEqual([{ url: "https://example.com/pdf-docs", type: "PAGE" }]);
+  expect(result).toEqual([
+    { url: "https://example.com/pdf-docs", type: "PAGE" },
+  ]);
 });
 
 test("extracts multiple links of different types", () => {
@@ -61,8 +71,12 @@ test("skips invalid URLs", () => {
 });
 
 test("handles URLs with special characters", () => {
-  const result = extractLinks("Check https://example.com/path?query=param#fragment");
-  expect(result).toEqual([{ url: "https://example.com/path?query=param#fragment", type: "PAGE" }]);
+  const result = extractLinks(
+    "Check https://example.com/path?query=param#fragment",
+  );
+  expect(result).toEqual([
+    { url: "https://example.com/path?query=param#fragment", type: "PAGE" },
+  ]);
 });
 
 test("handles URLs in parentheses", () => {

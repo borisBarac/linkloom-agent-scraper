@@ -1,10 +1,10 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ErrorCode = {
   ERR_HTTP_INVALID_URL: "ERR_HTTP_INVALID_URL",
   ERR_HTTP_TIMEOUT: "ERR_HTTP_TIMEOUT",
   ERR_HTTP_STATUS_ERROR: "ERR_HTTP_STATUS_ERROR",
   ERR_HTTP_REQUEST_FAILED: "ERR_HTTP_REQUEST_FAILED",
-  ERR_MARKDOWN_CONTENT_EXTRACTION_FAILED: "ERR_MARKDOWN_CONTENT_EXTRACTION_FAILED",
+  ERR_MARKDOWN_CONTENT_EXTRACTION_FAILED:
+    "ERR_MARKDOWN_CONTENT_EXTRACTION_FAILED",
   ERR_MARKDOWN_CONVERSION_FAILED: "ERR_MARKDOWN_CONVERSION_FAILED",
   PDF_MARKDOWN_CONVERSION_FAILED: "PDF_MARKDOWN_CONVERSION_FAILED",
   ERR_COULD_NOT_RENDER: "ERR_COULD_NOT_RENDER",
@@ -44,13 +44,22 @@ export class ScrapperError extends Error {
 }
 export type ScrapperErrorType = ScrapperError;
 
-export const isScrapperError = (error: unknown, codes: ErrorCodeType[]): error is ScrapperError => {
+export const isScrapperError = (
+  error: unknown,
+  codes: ErrorCodeType[],
+): error is ScrapperError => {
   return error instanceof ScrapperError && codes.includes(error.code);
 };
 
 export type RedisReadDefType = { key: string; items: [string, string[]][] };
 
-export type ModelProvider = "openai" | "gemini" | "openaiMulti" | "geminiMulti" | "openaiMini" | "geminiMini";
+export type ModelProvider =
+  | "openai"
+  | "gemini"
+  | "openaiMulti"
+  | "geminiMulti"
+  | "openaiMini"
+  | "geminiMini";
 
 export const ChartType = {
   Line: "line",

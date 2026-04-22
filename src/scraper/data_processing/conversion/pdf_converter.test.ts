@@ -21,13 +21,17 @@ describe("PDF Converter", () => {
     it("should handle empty buffer", async () => {
       const emptyBuffer = Buffer.from("");
 
-      await expect(convertPdfToMarkdown(emptyBuffer)).rejects.toThrow(ScrapperError);
+      await expect(convertPdfToMarkdown(emptyBuffer)).rejects.toThrow(
+        ScrapperError,
+      );
     });
 
     it("should handle invalid PDF data", async () => {
       const invalidBuffer = Buffer.from("not a pdf");
 
-      await expect(convertPdfToMarkdown(invalidBuffer)).rejects.toThrow(ScrapperError);
+      await expect(convertPdfToMarkdown(invalidBuffer)).rejects.toThrow(
+        ScrapperError,
+      );
     });
 
     it("should throw ScrapperError with correct code on failure", async () => {
@@ -68,7 +72,11 @@ describe("PDF Converter", () => {
     });
 
     it("should identify heading candidates", () => {
-      const headingTexts = ["MAIN TITLE", "Chapter 1: Introduction", "Section Header"];
+      const headingTexts = [
+        "MAIN TITLE",
+        "Chapter 1: Introduction",
+        "Section Header",
+      ];
 
       headingTexts.forEach((text) => {
         const isAllCaps = text === text.toUpperCase() && text.length > 3;

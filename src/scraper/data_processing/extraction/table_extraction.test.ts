@@ -44,7 +44,8 @@ describe("tableDataToMarkdownTable", () => {
       { Name: "Alice", Age: "30" },
       { Name: "Bob" }, // Age missing
     ];
-    const expected = "| Name | Age |\n| --- | --- |\n| Alice | 30 |\n| Bob |  |";
+    const expected =
+      "| Name | Age |\n| --- | --- |\n| Alice | 30 |\n| Bob |  |";
     expect(tableDataToMarkdownTable(data)).toBe(expected);
   });
 
@@ -68,7 +69,8 @@ describe("tableDataToMarkdownTable", () => {
       { Name: "Alice", Age: "30" },
       { Name: "Bob", Age: "25", Extra: "value" }, // Extra key ignored
     ];
-    const expected = "| Name | Age |\n| --- | --- |\n| Alice | 30 |\n| Bob | 25 |";
+    const expected =
+      "| Name | Age |\n| --- | --- |\n| Alice | 30 |\n| Bob | 25 |";
     expect(tableDataToMarkdownTable(data)).toBe(expected);
   });
 });
@@ -86,7 +88,10 @@ describe("extractTableDataFromPage", () => {
 
     const result = await extractTableDataFromPage(mockPage, "#testTable");
 
-    expect(mockPage.evaluate).toHaveBeenCalledWith(expect.any(Function), "#testTable");
+    expect(mockPage.evaluate).toHaveBeenCalledWith(
+      expect.any(Function),
+      "#testTable",
+    );
     expect(result).toEqual(mockTableData);
   });
 
@@ -97,7 +102,10 @@ describe("extractTableDataFromPage", () => {
 
     const result = await extractTableDataFromPage(mockPage, "#nonexistent");
 
-    expect(mockPage.evaluate).toHaveBeenCalledWith(expect.any(Function), "#nonexistent");
+    expect(mockPage.evaluate).toHaveBeenCalledWith(
+      expect.any(Function),
+      "#nonexistent",
+    );
     expect(result).toEqual([]);
   });
 
@@ -134,11 +142,15 @@ describe("extractTableDataFromPage", () => {
       evaluate: mock().mockRejectedValue(new Error("DOM evaluation failed")),
     } as unknown as Page;
 
-    await expect(extractTableDataFromPage(mockPage, "#testTable")).rejects.toThrow("DOM evaluation failed");
+    await expect(
+      extractTableDataFromPage(mockPage, "#testTable"),
+    ).rejects.toThrow("DOM evaluation failed");
   });
 
   test("should handle special characters in headers", async () => {
-    const mockTableData: TableData[] = [{ "Product Name": "Test Product", "Price $": "10.99" }];
+    const mockTableData: TableData[] = [
+      { "Product Name": "Test Product", "Price $": "10.99" },
+    ];
 
     const mockPage = {
       evaluate: mock().mockResolvedValue(mockTableData),
@@ -167,13 +179,20 @@ describe("extractTableData", () => {
       newPage: mock().mockResolvedValue(mockPage),
     } as unknown as Browser;
 
-    const result = await extractTableData(mockBrowser, "https://example.com", "#data-table");
+    const result = await extractTableData(
+      mockBrowser,
+      "https://example.com",
+      "#data-table",
+    );
 
     expect(mockBrowser.newPage).toHaveBeenCalledTimes(1);
     expect(mockPage.goto).toHaveBeenCalledWith("https://example.com", {
       waitUntil: "networkidle2",
     });
-    expect(mockPage.evaluate).toHaveBeenCalledWith(expect.any(Function), "#data-table");
+    expect(mockPage.evaluate).toHaveBeenCalledWith(
+      expect.any(Function),
+      "#data-table",
+    );
     expect(mockPage.close).toHaveBeenCalledTimes(1);
     expect(result).toEqual(mockTableData);
   });
@@ -188,9 +207,9 @@ describe("extractTableData", () => {
       newPage: mock().mockResolvedValue(mockPage),
     } as unknown as Browser;
 
-    await expect(extractTableData(mockBrowser, "https://invalid-url.com", "table")).rejects.toThrow(
-      "Navigation timeout",
-    );
+    await expect(
+      extractTableData(mockBrowser, "https://invalid-url.com", "table"),
+    ).rejects.toThrow("Navigation timeout");
 
     expect(mockPage.close).toHaveBeenCalledTimes(1);
   });
@@ -206,7 +225,9 @@ describe("extractTableData", () => {
       newPage: mock().mockResolvedValue(mockPage),
     } as unknown as Browser;
 
-    await expect(extractTableData(mockBrowser, "https://example.com", "table")).rejects.toThrow("Extraction failed");
+    await expect(
+      extractTableData(mockBrowser, "https://example.com", "table"),
+    ).rejects.toThrow("Extraction failed");
 
     expect(mockPage.close).toHaveBeenCalledTimes(1);
   });
@@ -216,9 +237,9 @@ describe("extractTableData", () => {
       newPage: mock().mockRejectedValue(new Error("Failed to create page")),
     } as unknown as Browser;
 
-    await expect(extractTableData(mockBrowser, "https://example.com", "table")).rejects.toThrow(
-      "Failed to create page",
-    );
+    await expect(
+      extractTableData(mockBrowser, "https://example.com", "table"),
+    ).rejects.toThrow("Failed to create page");
   });
 
   test("should handle page without close method gracefully", async () => {
@@ -234,7 +255,11 @@ describe("extractTableData", () => {
       newPage: mock().mockResolvedValue(mockPageWithoutClose),
     } as unknown as Browser;
 
-    const result = await extractTableData(mockBrowser, "https://example.com", "table");
+    const result = await extractTableData(
+      mockBrowser,
+      "https://example.com",
+      "table",
+    );
 
     expect(result).toEqual(mockTableData);
     // Should not throw error when trying to close
@@ -254,7 +279,9 @@ describe("extractTableData", () => {
     } as unknown as Browser;
 
     // Should throw error when close fails since it's in finally block
-    await expect(extractTableData(mockBrowser, "https://example.com", "table")).rejects.toThrow("Failed to close");
+    await expect(
+      extractTableData(mockBrowser, "https://example.com", "table"),
+    ).rejects.toThrow("Failed to close");
   });
 
   test("should return empty array when no tables found", async () => {
@@ -268,7 +295,11 @@ describe("extractTableData", () => {
       newPage: mock().mockResolvedValue(mockPage),
     } as unknown as Browser;
 
-    const result = await extractTableData(mockBrowser, "https://example.com", "#nonexistent");
+    const result = await extractTableData(
+      mockBrowser,
+      "https://example.com",
+      "#nonexistent",
+    );
 
     expect(result).toEqual([]);
     expect(mockPage.close).toHaveBeenCalledTimes(1);

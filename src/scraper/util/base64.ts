@@ -26,11 +26,17 @@ export const convertImageBufferToBase64 = (
   const jpegSignature = Buffer.from([0xff, 0xd8]);
   const pngSignature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
 
-  if (mimeType === MimeType.JPEG && !buffer.subarray(0, 2).equals(jpegSignature)) {
+  if (
+    mimeType === MimeType.JPEG &&
+    !buffer.subarray(0, 2).equals(jpegSignature)
+  ) {
     throw new Error("Buffer does not match JPEG signature.");
   }
 
-  if (mimeType === MimeType.PNG && !buffer.subarray(0, 8).equals(pngSignature)) {
+  if (
+    mimeType === MimeType.PNG &&
+    !buffer.subarray(0, 8).equals(pngSignature)
+  ) {
     throw new Error("Buffer does not match PNG signature.");
   }
 

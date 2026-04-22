@@ -38,7 +38,10 @@ const processHtmlUrl = async (url: string): Promise<string> => {
     }
 
     if (!htmlContent || htmlContent.trim().length === 0) {
-      throw new ScrapperError("ERR_MARKDOWN_CONTENT_EXTRACTION_FAILED", "No HTML content extracted from URL");
+      throw new ScrapperError(
+        "ERR_MARKDOWN_CONTENT_EXTRACTION_FAILED",
+        "No HTML content extracted from URL",
+      );
     }
 
     const markdown = cleanHtmlToMarkdown(htmlContent, {
@@ -66,10 +69,16 @@ const processHtmlUrl = async (url: string): Promise<string> => {
       errorMessage.includes("timeout") ||
       errorMessage.includes("exceeded")
     ) {
-      throw new ScrapperError("ERR_HTTP_TIMEOUT", `Request timeout: ${errorMessage}`);
+      throw new ScrapperError(
+        "ERR_HTTP_TIMEOUT",
+        `Request timeout: ${errorMessage}`,
+      );
     }
 
-    throw new ScrapperError("ERR_HTTP_REQUEST_FAILED", `Failed to process HTML URL: ${errorMessage}`);
+    throw new ScrapperError(
+      "ERR_HTTP_REQUEST_FAILED",
+      `Failed to process HTML URL: ${errorMessage}`,
+    );
   } finally {
     if (browser) {
       await browser.close();
@@ -82,13 +91,19 @@ const processPdfUrl = async (url: string): Promise<string> => {
     const pdfBuffer = await downloadFileAsBuffer(url);
 
     if (!pdfBuffer || pdfBuffer.length === 0) {
-      throw new ScrapperError("ERR_HTTP_REQUEST_FAILED", "Failed to download PDF file or file is empty");
+      throw new ScrapperError(
+        "ERR_HTTP_REQUEST_FAILED",
+        "Failed to download PDF file or file is empty",
+      );
     }
 
     const markdown = await convertPdfToMarkdown(pdfBuffer);
 
     if (!markdown || markdown.trim().length === 0) {
-      throw new ScrapperError("PDF_MARKDOWN_CONVERSION_FAILED", "PDF to markdown conversion resulted in empty content");
+      throw new ScrapperError(
+        "PDF_MARKDOWN_CONVERSION_FAILED",
+        "PDF to markdown conversion resulted in empty content",
+      );
     }
 
     return markdown;
@@ -98,19 +113,28 @@ const processPdfUrl = async (url: string): Promise<string> => {
     }
 
     const errorMessage = error instanceof Error ? error.message : String(error);
-    throw new ScrapperError("ERR_HTTP_REQUEST_FAILED", `Failed to process PDF URL: ${errorMessage}`);
+    throw new ScrapperError(
+      "ERR_HTTP_REQUEST_FAILED",
+      `Failed to process PDF URL: ${errorMessage}`,
+    );
   }
 };
 
 export const convertLinkToMarkdown = async (url: string): Promise<string> => {
   if (!url || typeof url !== "string" || url.trim().length === 0) {
-    throw new ScrapperError("INVALID_INPUT", "URL is required and must be a non-empty string");
+    throw new ScrapperError(
+      "INVALID_INPUT",
+      "URL is required and must be a non-empty string",
+    );
   }
 
   try {
     new URL(url);
   } catch {
-    throw new ScrapperError("ERR_HTTP_INVALID_URL", `Invalid URL format: ${url}`);
+    throw new ScrapperError(
+      "ERR_HTTP_INVALID_URL",
+      `Invalid URL format: ${url}`,
+    );
   }
 
   if (isPdfUrl(url)) {

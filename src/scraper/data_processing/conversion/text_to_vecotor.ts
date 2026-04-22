@@ -12,11 +12,17 @@ const EmbeddingModelProviderValues = {
   GEMINI: "models/embedding-001",
 } as const;
 
-type EmbeddingModelProviderType = (typeof EmbeddingModelProviderValues)[keyof typeof EmbeddingModelProviderValues];
+type EmbeddingModelProviderType =
+  (typeof EmbeddingModelProviderValues)[keyof typeof EmbeddingModelProviderValues];
 
-export const textToVector = async (text: string, options?: TextToVectorOptions): Promise<number[]> => {
+export const textToVector = async (
+  text: string,
+  options?: TextToVectorOptions,
+): Promise<number[]> => {
   const provider: ModelProvider = options?.provider || "openai"; // Default to OpenAI if not specified
-  const apiKey = options?.apiKey || (provider === "openai" ? Bun.env.OPENAI_API_KEY : Bun.env.GEMINI_API_KEY);
+  const apiKey =
+    options?.apiKey ||
+    (provider === "openai" ? Bun.env.OPENAI_API_KEY : Bun.env.GEMINI_API_KEY);
 
   let model: EmbeddingModelProviderType;
 
@@ -32,7 +38,10 @@ export const textToVector = async (text: string, options?: TextToVectorOptions):
   }
 
   if (!apiKey) {
-    throw new ScrapperError("LLM_MISSING_API_KEY", `API key for ${provider} is required`);
+    throw new ScrapperError(
+      "LLM_MISSING_API_KEY",
+      `API key for ${provider} is required`,
+    );
   }
 
   try {
@@ -58,7 +67,12 @@ export const textToVector = async (text: string, options?: TextToVectorOptions):
 
     return embeddingsInstance.embedQuery(text);
   } catch (error) {
-    console.error(`Embedding failed: ${error instanceof Error ? error.message : error}`);
-    throw new ScrapperError("LLM_EMBEDDING_ERROR", "Failed to generate vector representation");
+    console.error(
+      `Embedding failed: ${error instanceof Error ? error.message : error}`,
+    );
+    throw new ScrapperError(
+      "LLM_EMBEDDING_ERROR",
+      "Failed to generate vector representation",
+    );
   }
 };

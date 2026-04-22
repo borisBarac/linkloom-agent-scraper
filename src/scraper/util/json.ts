@@ -8,7 +8,9 @@ export const parseJson = <T = unknown>(input: string): T | null => {
   }
 };
 
-export const stringifyJson = (input: Record<string, unknown>): string | null => {
+export const stringifyJson = (
+  input: Record<string, unknown>,
+): string | null => {
   try {
     return JSON.stringify(input);
   } catch {

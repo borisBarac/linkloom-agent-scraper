@@ -9,13 +9,18 @@ if (!existsSync(TEMP_DIR_PATH)) {
   mkdirSync(TEMP_DIR_PATH, { recursive: true });
 }
 
-export const saveToTempDir = (data: string | Buffer, filename: string): string => {
+export const saveToTempDir = (
+  data: string | Buffer,
+  filename: string,
+): string => {
   const filePath = join(TEMP_DIR_PATH, filename);
   Bun.write(filePath, data);
   return filePath;
 };
 
-export const downloadFileAsBuffer = async (url: string): Promise<Buffer | undefined> => {
+export const downloadFileAsBuffer = async (
+  url: string,
+): Promise<Buffer | undefined> => {
   try {
     const response = await axios.get(url, {
       responseType: "arraybuffer", // Crucial to get ArrayBuffer back
@@ -26,7 +31,9 @@ export const downloadFileAsBuffer = async (url: string): Promise<Buffer | undefi
     const arrayBuffer = response.data;
     const buffer = Buffer.from(arrayBuffer);
 
-    console.log(`Downloaded file from ${url} and converted to Buffer (using Axios).`);
+    console.log(
+      `Downloaded file from ${url} and converted to Buffer (using Axios).`,
+    );
     console.log(`Buffer size: ${buffer.length} bytes`);
 
     return buffer;
@@ -62,5 +69,7 @@ export const cleanTempDir = async (maxAgeDays: number): Promise<void> => {
   );
 };
 
-export const saveImageBuffer = (buffer: Buffer | ArrayBuffer | Uint8Array, filePath: string): Promise<string> =>
-  Bun.write(filePath, buffer).then(() => filePath);
+export const saveImageBuffer = (
+  buffer: Buffer | ArrayBuffer | Uint8Array,
+  filePath: string,
+): Promise<string> => Bun.write(filePath, buffer).then(() => filePath);

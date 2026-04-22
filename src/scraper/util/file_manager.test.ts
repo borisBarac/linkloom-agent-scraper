@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, expect, mock, test } from "bun:test";
 import { existsSync, writeFileSync } from "node:fs";
 import { utimes } from "node:fs/promises";
-import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { TEMP_DIR_PATH } from "../../app_config";
 import { cleanTempDir, saveToTempDir } from "./file_manager";
 
-const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 // Mock timers
 const DateMock = mock(() => Date.now());

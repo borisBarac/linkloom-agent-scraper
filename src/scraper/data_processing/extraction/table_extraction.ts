@@ -2,8 +2,11 @@ import type { Browser, Page } from "puppeteer";
 
 export type TableData = { [header: string]: string };
 
-export const extractTableDataFromPage = async (page: Page, tableSelector: string): Promise<TableData[]> => {
-  return await page.evaluate((selector: any) => {
+export const extractTableDataFromPage = async (
+  page: Page,
+  tableSelector: string,
+): Promise<TableData[]> => {
+  return await page.evaluate((selector: string) => {
     const tableElements = document.querySelectorAll(selector);
     if (!tableElements.length) {
       return [];
@@ -11,17 +14,22 @@ export const extractTableDataFromPage = async (page: Page, tableSelector: string
 
     const allCombinedRows: TableData[] = [];
 
-    tableElements.forEach((tableElement: any) => {
-      const headers = Array.from(tableElement.querySelectorAll("th")).map((header: any) => header.innerText.trim());
+    tableElements.forEach((tableElement: Element) => {
+      const headers = Array.from(tableElement.querySelectorAll("th")).map(
+        (header: Element) => header.textContent?.trim() ?? "",
+      );
       const rows = Array.from(tableElement.querySelectorAll("tbody tr"));
 
-      rows.forEach((row: any) => {
+      rows.forEach((row: Element) => {
         const cells = Array.from(row.querySelectorAll("td"));
         const rowData: TableData = {};
         if (headers.length > 0) {
-          headers.forEach((header: any, index: number) => {
-            const safeHeader = typeof header === "string" ? header.replace(/[^a-zA-Z0-9 _-]/g, "") : `col${index}`;
-            rowData[safeHeader] = (cells[index] as any)?.innerText.trim() || "";
+          headers.forEach((header: string, index: number) => {
+            const safeHeader =
+              typeof header === "string"
+                ? header.replace(/[^a-zA-Z0-9 _-]/g, "")
+                : `col${index}`;
+            rowData[safeHeader] = cells[index]?.textContent?.trim() ?? "";
           });
         }
         allCombinedRows.push(rowData);
@@ -32,7 +40,11 @@ export const extractTableDataFromPage = async (page: Page, tableSelector: string
   }, tableSelector);
 };
 
-export const extractTableData = async (browser: Browser, url: string, tableSelector: string): Promise<TableData[]> => {
+export const extractTableData = async (
+  browser: Browser,
+  url: string,
+  tableSelector: string,
+): Promise<TableData[]> => {
   let page: Page | undefined;
   try {
     page = await browser.newPage();
@@ -61,7 +73,10 @@ export const tableDataToMarkdownTable = (data: TableData[]): string => {
   const headerRow = `| ${headers.join(" | ")} |`;
 
   // Adjust separator row for cases with no headers
-  const separatorRow = headers.length > 0 ? `| ${headers.map(() => "---").join(" | ")} |` : "| --- |";
+  const separatorRow =
+    headers.length > 0
+      ? `| ${headers.map(() => "---").join(" | ")} |`
+      : "| --- |";
 
   const dataRows = data
     .map((row) => {
