@@ -1,11 +1,13 @@
 # LinkLoom MCP Server
 
+> [Back to main README](../../README.md)
+
 A Model Context Protocol server exposing LinkLoom's scraping, conversion, and extraction tools to MCP clients (Claude Desktop, Cursor, etc.).
 
 ## Quick Start
 
 ```bash
-bun run cli mcp
+bun run mcp
 ```
 
 The server communicates over stdio — it reads JSON-RPC from stdin and writes responses to stdout. You don't run it directly; MCP clients spawn it as a child process.
@@ -24,19 +26,14 @@ The server communicates over stdio — it reads JSON-RPC from stdin and writes r
 ## Usage
 
 ```bash
-# Via CLI subcommand
-bun run cli mcp
-
-# Via dedicated script shortcut
-bun run mcp
-
-# Via standalone entry point
-bun run src/mcp.ts
+bun run cli mcp      # via CLI subcommand
+bun run mcp          # via script shortcut
+bun run src/mcp.ts   # via entry point
 ```
 
 ## Client Configuration
 
-Add one of these to your MCP client's config file:
+Add one of these to your MCP client's config file.
 
 ### Claude Desktop
 
@@ -68,7 +65,7 @@ Add to `.cursor/mcp.json` in your project or `~/.cursor/mcp.json` globally:
 }
 ```
 
-### Any MCP Client (generic)
+### Any MCP Client
 
 The server is a standard stdio MCP server. Point your client at:
 

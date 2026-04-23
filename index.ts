@@ -12,3 +12,4 @@ export {
   type ScrapperErrorType,
 } from "./src/scraper/types/internal";
 export * as fileManager from "./src/scraper/util/file_manager";
+export { textToVector } from "./src/scraper/data_processing/conversion/text_to_vecotor";
