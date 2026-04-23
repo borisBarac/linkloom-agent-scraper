@@ -1,4 +1,4 @@
-# Scraper Service
+# LinkLoom
 
 TypeScript/Bun library for web scraping, content extraction, and markdown conversion.
 

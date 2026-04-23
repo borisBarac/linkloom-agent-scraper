@@ -1,5 +1,5 @@
 {
-  "name": "scraper_service",
+  "name": "linkloom",
   "module": "index.ts",
   "type": "module",
   "private": true,
