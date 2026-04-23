@@ -3,6 +3,7 @@
 import { defineCommand, runMain } from "citty";
 import html from "./cli/commands/html";
 import links from "./cli/commands/links";
+import mcp from "./cli/commands/mcp";
 import pdf from "./cli/commands/pdf";
 import render from "./cli/commands/render";
 import scrape from "./cli/commands/scrape";
@@ -22,6 +23,7 @@ const main = defineCommand({
     render,
     links,
     tables,
+    mcp,
   },
 });
 

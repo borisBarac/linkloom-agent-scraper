@@ -12,6 +12,7 @@
   "dependencies": {
     "@langchain/google-genai": "^2.1.28",
     "@langchain/openai": "^1.4.4",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@mozilla/readability": "^0.6.0",
     "axios": "^1.15.2",
     "camoufox-js": "^0.10.2",
@@ -25,7 +26,8 @@
     "typescript": "^6.0.3"
   },
   "bin": {
-    "linkloom": "src/cli.ts"
+    "linkloom": "src/cli.ts",
+    "linkloom-mcp": "src/mcp.ts"
   },
   "scripts": {
     "format": "bunx biome format --write",
@@ -33,6 +35,7 @@
     "check": "bunx biome check --write",
     "type_check": "bunx tsc --noEmit",
     "start": "bun run index.ts",
-    "cli": "bun run src/cli.ts"
+    "cli": "bun run src/cli.ts",
+    "mcp": "bun run src/cli.ts mcp"
   }
 }
