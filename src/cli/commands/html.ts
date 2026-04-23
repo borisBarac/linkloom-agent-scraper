@@ -21,7 +21,7 @@ export default defineCommand({
     "run-js": {
       type: "boolean",
       description: "Enable JavaScript execution",
-      default: true,
+      default: false,
     },
     "base-url": {
       type: "string",
