@@ -66,11 +66,13 @@ bun run cli render https://example.com -o page.html --wait-until networkidle
 
 ### `links <input>`
 
-Extract and classify links from text or HTML.
+Extract and classify links from text, HTML, or a URL. URLs are auto-detected and fetched with a headless browser.
 
 ```bash
 bun run cli links "Visit https://example.com and https://site.com/doc.pdf"
 bun run cli links page.html --file --html
+bun run cli links https://example.com
+bun run cli links https://example.com -o links.json
 ```
 
 | Flag | Description |

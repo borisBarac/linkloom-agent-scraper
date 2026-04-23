@@ -4,16 +4,26 @@ import {
   extractLinks,
 } from "../../scraper/data_processing/extraction/link_extraction";
 import { writeOutput } from "../output";
+import { renderUrlToHtml } from "../utils";
+
+const isUrl = (input: string): boolean => {
+  try {
+    const url = new URL(input);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
 
 export default defineCommand({
   meta: {
     name: "links",
-    description: "Extract and classify links from text or HTML",
+    description: "Extract and classify links from text, HTML, or a URL",
   },
   args: {
     input: {
       type: "positional",
-      description: "Text, HTML string, or path to a file",
+      description: "Text, HTML string, URL, or path to a file",
       required: true,
     },
     output: {
@@ -37,14 +47,29 @@ export default defineCommand({
 
     try {
       let content = input as string;
+      const inputIsUrl = !fileFlag && isUrl(input as string);
+
       if (fileFlag) {
         content = await Bun.file(input as string).text();
+      } else if (inputIsUrl) {
+        content = await renderUrlToHtml(input as string);
       }
 
       let result: string;
-      if (htmlFlag) {
-        const links = await extractDownloadLinksFromHtml(content);
-        result = JSON.stringify(links, null, 2);
+      if (htmlFlag || inputIsUrl) {
+        const downloadLinks = await extractDownloadLinksFromHtml(content);
+        const classifiedLinks = extractLinks(content);
+
+        const allLinks = [...classifiedLinks];
+        const seen = new Set(classifiedLinks.map((l) => l.url));
+        for (const url of downloadLinks) {
+          if (!seen.has(url)) {
+            allLinks.push({ url, type: "PDF" });
+            seen.add(url);
+          }
+        }
+
+        result = JSON.stringify(allLinks, null, 2);
       } else {
         const links = extractLinks(content);
         result = JSON.stringify(links, null, 2);

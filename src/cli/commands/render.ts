@@ -1,6 +1,6 @@
 import { defineCommand } from "citty";
-import { initialize, renderPage } from "../../scraper/renderers/renderer";
 import { writeOutput } from "../output";
+import { renderUrlToHtml } from "../utils";
 
 export default defineCommand({
   meta: {
@@ -43,23 +43,13 @@ export default defineCommand({
       selector,
     } = ctx.args;
 
-    let browser: import("playwright").Browser | undefined;
     try {
-      browser = await initialize();
-      const result = await renderPage(browser, url as string, {
+      let html = await renderUrlToHtml(url as string, {
         timeout: timeout ? Number(timeout) : 10000,
         waitUntil:
           (waitUntil as "domcontentloaded" | "load" | "networkidle") ??
           "domcontentloaded",
-        frames: { enabled: false },
       });
-
-      let html: string;
-      if (typeof result === "string") {
-        html = result;
-      } else {
-        html = result.mainContent;
-      }
 
       if (selector) {
         const { JSDOM } = await import("jsdom");
@@ -78,10 +68,6 @@ export default defineCommand({
         `Error: ${error instanceof Error ? error.message : String(error)}`,
       );
       process.exit(1);
-    } finally {
-      if (browser) {
-        await browser.close();
-      }
     }
   },
 });
