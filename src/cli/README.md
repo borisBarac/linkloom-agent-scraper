@@ -61,7 +61,7 @@ bun run cli render https://example.com -o page.html --wait-until networkidle
 |------|-------------|
 | `-o, --output` | Write output to a file instead of stdout |
 | `--timeout` | Page load timeout in ms (default: 10000) |
-| `--wait-until` | Wait until event: `domcontentloaded`, `load`, `networkidle` (default: `domcontentloaded`) |
+| `--wait-until` | Wait until event: `domcontentloaded`, `load`, `networkidle` (default: `networkidle`) |
 | `--selector` | CSS selector to extract a specific element instead of the full page |
 
 ### `links <input>`

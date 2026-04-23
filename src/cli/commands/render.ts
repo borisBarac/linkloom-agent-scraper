@@ -26,7 +26,7 @@ export default defineCommand({
     "wait-until": {
       type: "string",
       description: "Wait until event: domcontentloaded | load | networkidle",
-      default: "domcontentloaded",
+      default: "networkidle",
     },
     selector: {
       type: "string",
