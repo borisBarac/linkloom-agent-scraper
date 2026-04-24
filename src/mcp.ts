@@ -19,3 +19,16 @@ registerTablesTool(server);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);
+
+console.error([
+  "",
+  "  LinkLoom MCP Server v1.0.0",
+  "",
+  "  Transport : stdio (no HTTP port — reads JSON-RPC from stdin)",
+  "",
+  "  Test with MCP Inspector :",
+  "    npx @modelcontextprotocol/inspector bun run src/mcp.ts",
+  "",
+  "  Tools : scrape, html_to_markdown, pdf_to_markdown, render_page, extract_links, extract_tables",
+  "",
+].join("\n"));
