@@ -1,8 +1,58 @@
 {
-  "name": "linkloom",
-  "module": "index.ts",
+  "name": "@boris.barac/linkloom",
+  "version": "0.1.1",
+  "description": "Web scraping, content extraction, and markdown conversion — in TypeScript/Bun",
   "type": "module",
-  "private": true,
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "homepage": "https://github.com/borisBarac/linkloom-agent-scraper",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/borisBarac/linkloom-agent-scraper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/borisBarac/linkloom-agent-scraper/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "scraping",
+    "markdown",
+    "pdf",
+    "mcp",
+    "bun",
+    "cli",
+    "web-scraping",
+    "content-extraction"
+  ],
+  "engines": {
+    "bun": ">=1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "index.ts",
+    "src/",
+    "env.example",
+    "README.md"
+  ],
+  "bin": {
+    "linkloom": "src/cli.ts",
+    "linkloom-mcp": "src/mcp.ts"
+  },
+  "scripts": {
+    "format": "bunx biome format --write",
+    "lint": "bunx biome lint --write",
+    "check": "bunx biome check --write",
+    "type_check": "bunx tsc --noEmit",
+    "start": "bun run index.ts",
+    "cli": "bun run src/cli.ts",
+    "mcp": "bun run src/cli.ts mcp"
+  },
   "devDependencies": {
     "@types/bun": "^1.3.13",
     "@types/jsdom": "^28.0.1",
@@ -24,18 +74,5 @@
   },
   "peerDependencies": {
     "typescript": "^6.0.3"
-  },
-  "bin": {
-    "linkloom": "src/cli.ts",
-    "linkloom-mcp": "src/mcp.ts"
-  },
-  "scripts": {
-    "format": "bunx biome format --write",
-    "lint": "bunx biome lint --write",
-    "check": "bunx biome check --write",
-    "type_check": "bunx tsc --noEmit",
-    "start": "bun run index.ts",
-    "cli": "bun run src/cli.ts",
-    "mcp": "bun run src/cli.ts mcp"
   }
 }

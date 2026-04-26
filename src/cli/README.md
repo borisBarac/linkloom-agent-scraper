@@ -1,6 +1,14 @@
 # CLI Reference
 
+## Using via bunx (no install required)
+
+```bash
+bunx @boris.barac/linkloom <command> [options]
 ```
+
+## Development (from source)
+
+```bash
 bun run cli <command> [options]
 ```
 
@@ -11,8 +19,8 @@ bun run cli <command> [options]
 Convert a URL (HTML page or PDF) to markdown.
 
 ```bash
-bun run cli scrape https://example.com
-bun run cli scrape https://example.com/paper.pdf -o output.md
+bunx @boris.barac/linkloom scrape https://example.com
+bunx @boris.barac/linkloom scrape https://example.com/paper.pdf -o output.md
 ```
 
 | Flag | Description |
@@ -24,9 +32,9 @@ bun run cli scrape https://example.com/paper.pdf -o output.md
 Convert HTML to markdown. Reads from a file argument or stdin.
 
 ```bash
-bun run cli html page.html
-echo "<h1>Hello</h1>" | bun run cli html
-bun run cli html page.html -o output.md
+bunx @boris.barac/linkloom html page.html
+echo "<h1>Hello</h1>" | bunx @boris.barac/linkloom html
+bunx @boris.barac/linkloom html page.html -o output.md
 ```
 
 | Flag | Description |
@@ -40,8 +48,8 @@ bun run cli html page.html -o output.md
 Convert a PDF file to markdown.
 
 ```bash
-bun run cli pdf document.pdf
-bun run cli pdf document.pdf -o output.md
+bunx @boris.barac/linkloom pdf document.pdf
+bunx @boris.barac/linkloom pdf document.pdf -o output.md
 ```
 
 | Flag | Description |
@@ -53,8 +61,8 @@ bun run cli pdf document.pdf -o output.md
 Render a URL with a headless browser and output raw HTML.
 
 ```bash
-bun run cli render https://example.com
-bun run cli render https://example.com -o page.html --wait-until networkidle
+bunx @boris.barac/linkloom render https://example.com
+bunx @boris.barac/linkloom render https://example.com -o page.html --wait-until networkidle
 ```
 
 | Flag | Description |
@@ -69,10 +77,10 @@ bun run cli render https://example.com -o page.html --wait-until networkidle
 Extract and classify links from text, HTML, or a URL. URLs are auto-detected and fetched with a headless browser.
 
 ```bash
-bun run cli links "Visit https://example.com and https://site.com/doc.pdf"
-bun run cli links page.html --file --html
-bun run cli links https://example.com
-bun run cli links https://example.com -o links.json
+bunx @boris.barac/linkloom links "Visit https://example.com and https://site.com/doc.pdf"
+bunx @boris.barac/linkloom links page.html --file --html
+bunx @boris.barac/linkloom links https://example.com
+bunx @boris.barac/linkloom links https://example.com -o links.json
 ```
 
 | Flag | Description |
@@ -86,8 +94,8 @@ bun run cli links https://example.com -o links.json
 Extract HTML tables from a web page as markdown.
 
 ```bash
-bun run cli tables https://example.com/data
-bun run cli tables https://example.com/data --selector "table.stats"
+bunx @boris.barac/linkloom tables https://example.com/data
+bunx @boris.barac/linkloom tables https://example.com/data --selector "table.stats"
 ```
 
 | Flag | Description |
@@ -100,5 +108,6 @@ bun run cli tables https://example.com/data --selector "table.stats"
 Start the MCP server. See [MCP Server docs](../mcp/README.md) for details.
 
 ```bash
-bun run cli mcp
+bunx @boris.barac/linkloom mcp
+bunx @boris.barac/linkloom-mcp
 ```

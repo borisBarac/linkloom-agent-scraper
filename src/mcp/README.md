@@ -26,6 +26,12 @@ The server communicates over stdio — it reads JSON-RPC from stdin and writes r
 ## Usage
 
 ```bash
+bunx @boris.barac/linkloom mcp
+```
+
+Or from source:
+
+```bash
 bun run cli mcp      # via CLI subcommand
 bun run mcp          # via script shortcut
 bun run src/mcp.ts   # via entry point
@@ -44,7 +50,7 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS):
   "mcpServers": {
     "linkloom": {
       "command": "bun",
-      "args": ["run", "/absolute/path/to/LinkLoom/src/mcp.ts"]
+      "args": ["x", "@boris.barac/linkloom", "mcp"]
     }
   }
 }
@@ -59,7 +65,7 @@ Add to `.cursor/mcp.json` in your project or `~/.cursor/mcp.json` globally:
   "mcpServers": {
     "linkloom": {
       "command": "bun",
-      "args": ["run", "/absolute/path/to/LinkLoom/src/mcp.ts"]
+      "args": ["x", "@boris.barac/linkloom", "mcp"]
     }
   }
 }
@@ -71,19 +77,15 @@ The server is a standard stdio MCP server. Point your client at:
 
 ```
 command: bun
-args: ["run", "/absolute/path/to/LinkLoom/src/mcp.ts"]
+args: ["x", "@boris.barac/linkloom", "mcp"]
 ```
 
-## Smoke Testing
+## MCP Inspector
 
-Test the initialize handshake:
+Test and debug the server interactively using the [MCP Inspector](https://github.com/modelcontextprotocol/inspector):
 
 ```bash
-echo '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}},"id":1}' | bun run cli mcp
+bunx @modelcontextprotocol/inspector bunx @boris.barac/linkloom mcp
 ```
 
-List all tools:
-
-```bash
-printf '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}},"id":1}\n{"jsonrpc":"2.0","method":"tools/list","params":{},"id":2}\n' | bun run cli mcp
-```
+This opens a web UI where you can browse available tools, call them with custom parameters, and inspect JSON-RPC messages.

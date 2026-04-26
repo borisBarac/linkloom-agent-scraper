@@ -11,7 +11,7 @@ import tables from "./cli/commands/tables";
 
 const main = defineCommand({
   meta: {
-    name: "linkloom",
+    name: "@boris.barac/linkloom",
     description:
       "CLI for web scraping, content extraction, and markdown conversion",
     version: "1.0.0",

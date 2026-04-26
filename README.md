@@ -1,7 +1,6 @@
 # LinkLoom
 
 Web scraping, content extraction, and markdown conversion — in TypeScript/Bun.
-
 Pass a URL, get clean markdown. Render JS-heavy pages. Extract links, tables, and embeddings.
 
 ## Features
@@ -21,21 +20,29 @@ Pass a URL, get clean markdown. Render JS-heavy pages. Extract links, tables, an
 
 Bun, Camoufox, JSDOM + Readability + Turndown, pdf.js-extract, LangChain (optional embeddings)
 
-## Setup
-
-### Prerequisites
-
-- [Bun](https://bun.sh/) runtime
-- [camoufox] (https://camoufox.com/) headless browser
-
-### Install
+## Install
 
 ```bash
-bun install
-npx camoufox-js fetch
+bun add @boris.barac/linkloom
 ```
 
-### Environment
+## CLI Usage (via bunx)
+
+```bash
+bunx @boris.barac/linkloom scrape https://example.com
+bunx @boris.barac/linkloom mcp
+```
+
+See the [CLI Reference](src/cli/README.md) for all commands and flags.
+
+## Documentation
+| Document | Description |
+|---|---|
+| [Library API](src/README.md) | Programmatic usage with code examples for every module |
+| [CLI Reference](src/cli/README.md) | Command-line interface — all subcommands, flags, and examples |
+| [MCP Server](src/mcp/README.md) | Model Context Protocol server for AI clients (Claude, Cursor, etc.) |
+
+## Environment
 
 ```bash
 cp env.example .env
@@ -51,15 +58,7 @@ cp env.example .env
 
 > \* Only needed if you use the `textToVector` embedding feature. The core scraping and conversion pipeline works without any API keys.
 
-## Documentation
-
-| Document | Description |
-|---|---|
-| [Library API](src/README.md) | Programmatic usage with code examples for every module |
-| [CLI Reference](src/cli/README.md) | Command-line interface — all subcommands, flags, and examples |
-| [MCP Server](src/mcp/README.md) | Model Context Protocol server for AI clients (Claude, Cursor, etc.) |
-
-## Scripts
+## Scripts (development)
 
 | Command | Description |
 |---|---|
