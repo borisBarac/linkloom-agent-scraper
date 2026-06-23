@@ -26,6 +26,14 @@ Bun, Camoufox, JSDOM + Readability + Turndown, pdf.js-extract, LangChain (option
 bun add @boris.barac/linkloom
 ```
 
+> **Browser setup (one-time):** headless rendering uses [Camoufox](https://github.com/daijro/camoufox). After installing, download the browser binary and GeoIP database:
+>
+> ```bash
+> bunx camoufox-js fetch
+> ```
+>
+> When developing from this repo, use `bun run setup:browser`. See `bun run browser:path` to find where it was installed.
+
 ## CLI Usage (via bunx)
 
 ```bash
@@ -67,4 +75,6 @@ cp env.example .env
 | `bun run mcp` | Run the MCP server |
 | `bun run check` | Format + lint (biome) |
 | `bun run type_check` | TypeScript type check |
+| `bun run setup:browser` | Download the Camoufox browser + GeoIP DB (required once before scraping) |
+| `bun run browser:path` | Print the local Camoufox install path |
 | `bun test` | Run tests |

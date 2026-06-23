@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "bun:test";
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import pkg from "../../package.json" with { type: "json" };
 
 const CLI_ENTRY = join(import.meta.dir, "..", "cli.ts");
 const FIXTURES_DIR = join(import.meta.dir, "__e2e_fixtures__");
@@ -103,7 +104,7 @@ describe("root command", () => {
   it("prints version with --version", async () => {
     const result = await runCli(["--version"]);
     expect(result.exitCode).toBe(0);
-    expect(result.stdout.trim()).toBe("1.0.0");
+    expect(result.stdout.trim()).toBe(pkg.version);
   });
 });
 

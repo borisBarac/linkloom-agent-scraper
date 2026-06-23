@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import pkg from "../package.json" with { type: "json" };
 import { registerHtmlTool } from "./mcp/tools/html";
 import { registerLinksTool } from "./mcp/tools/links";
 import { registerPdfTool } from "./mcp/tools/pdf";
@@ -8,7 +9,7 @@ import { registerRenderTool } from "./mcp/tools/render";
 import { registerScrapeTool } from "./mcp/tools/scrape";
 import { registerTablesTool } from "./mcp/tools/tables";
 
-const server = new McpServer({ name: "@boris.barac/linkloom", version: "1.0.0" });
+const server = new McpServer({ name: "@boris.barac/linkloom", version: pkg.version });
 
 registerScrapeTool(server);
 registerHtmlTool(server);
@@ -23,7 +24,7 @@ await server.connect(transport);
 console.error(
   [
     "",
-    "  LinkLoom MCP Server v1.0.0",
+    `  LinkLoom MCP Server v${pkg.version}`,
     "",
     "  Transport : stdio (no HTTP port — reads JSON-RPC from stdin)",
     "",

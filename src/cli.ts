@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 
 import { defineCommand, runMain } from "citty";
+import pkg from "../package.json" with { type: "json" };
 import html from "./cli/commands/html";
 import links from "./cli/commands/links";
 import mcp from "./cli/commands/mcp";
@@ -14,7 +15,7 @@ const main = defineCommand({
     name: "@boris.barac/linkloom",
     description:
       "CLI for web scraping, content extraction, and markdown conversion",
-    version: "1.0.0",
+    version: pkg.version,
   },
   subCommands: {
     scrape,
