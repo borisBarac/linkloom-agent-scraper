@@ -58,18 +58,7 @@ export default defineCommand({
       let result: string;
       if (htmlFlag || inputIsUrl) {
         const downloadLinks = await extractDownloadLinksFromHtml(content);
-        const classifiedLinks = extractLinks(content);
-
-        const allLinks = [...classifiedLinks];
-        const seen = new Set(classifiedLinks.map((l) => l.url));
-        for (const url of downloadLinks) {
-          if (!seen.has(url)) {
-            allLinks.push({ url, type: "PDF" });
-            seen.add(url);
-          }
-        }
-
-        result = JSON.stringify(allLinks, null, 2);
+        result = JSON.stringify(downloadLinks, null, 2);
       } else {
         const links = extractLinks(content);
         result = JSON.stringify(links, null, 2);

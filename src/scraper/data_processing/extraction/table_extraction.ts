@@ -49,7 +49,7 @@ export const extractTableData = async (
   try {
     page = await browser.newPage();
     await page.goto(url, { waitUntil: "networkidle" });
-    return extractTableDataFromPage(page, tableSelector);
+    return await extractTableDataFromPage(page, tableSelector);
   } finally {
     if (page && typeof page.close === "function") {
       await page.close();

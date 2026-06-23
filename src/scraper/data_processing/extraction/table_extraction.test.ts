@@ -197,6 +197,38 @@ describe("extractTableData", () => {
     expect(result).toEqual(mockTableData);
   });
 
+  test("should wait for table extraction before closing the page", async () => {
+    const mockTableData: TableData[] = [{ Header: "Value" }];
+    const events: string[] = [];
+
+    const mockPage = {
+      goto: mock().mockResolvedValue(undefined),
+      close: mock(() => {
+        events.push("close");
+        return Promise.resolve();
+      }),
+      evaluate: mock(async () => {
+        events.push("evaluate:start");
+        await new Promise((resolve) => setTimeout(resolve, 1));
+        events.push("evaluate:end");
+        return mockTableData;
+      }),
+    } as unknown as Page;
+
+    const mockBrowser = {
+      newPage: mock().mockResolvedValue(mockPage),
+    } as unknown as Browser;
+
+    const result = await extractTableData(
+      mockBrowser,
+      "https://example.com",
+      "#data-table",
+    );
+
+    expect(result).toEqual(mockTableData);
+    expect(events).toEqual(["evaluate:start", "evaluate:end", "close"]);
+  });
+
   test("should close page even if navigation fails", async () => {
     const mockPage = {
       goto: mock().mockRejectedValue(new Error("Navigation timeout")),
