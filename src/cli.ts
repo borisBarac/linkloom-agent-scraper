@@ -8,6 +8,7 @@ import mcp from "./cli/commands/mcp";
 import pdf from "./cli/commands/pdf";
 import render from "./cli/commands/render";
 import scrape from "./cli/commands/scrape";
+import search from "./cli/commands/search";
 import tables from "./cli/commands/tables";
 
 const main = defineCommand({
@@ -22,6 +23,7 @@ const main = defineCommand({
     html,
     pdf,
     render,
+    search,
     links,
     tables,
     mcp,

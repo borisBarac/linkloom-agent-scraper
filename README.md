@@ -1,7 +1,7 @@
 # LinkLoom
 
-Web scraping, content extraction, and markdown conversion — in TypeScript/Bun.
-Pass a URL, get clean markdown. Render JS-heavy pages. Extract links, tables, and embeddings.
+Web scraping, Brave search, content extraction, and markdown conversion — in TypeScript/Bun.
+Pass a URL, get clean markdown. Render JS-heavy pages. Search the web with Brave. Extract links, tables, and embeddings.
 
 ## Features
 
@@ -11,6 +11,7 @@ Pass a URL, get clean markdown. Render JS-heavy pages. Extract links, tables, an
 - **Headless browser rendering** — render JavaScript-heavy pages via Camoufox (stealth Firefox/Playwright)
 - **iframe support** — extract content from nested frames with configurable wait strategies
 - **Link extraction** — pull and classify URLs from text or HTML (PDF vs Page)
+- **Web search** — query Brave search results and return structured links
 - **Table extraction** — scrape HTML tables from pages and convert to markdown tables
 - **Text embeddings** — generate vectors via OpenAI or Gemini (optional, requires API key)
 - **CLI** — use every feature from the command line

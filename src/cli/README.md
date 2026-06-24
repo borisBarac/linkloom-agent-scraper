@@ -89,6 +89,21 @@ bunx @boris.barac/linkloom links https://example.com -o links.json
 | `--html` | Treat input as HTML and extract PDF download links |
 | `--file` | Treat input as a file path to read from |
 
+### `search <query>`
+
+Search the web with Brave and return structured JSON results.
+
+```bash
+bunx @boris.barac/linkloom search OpenAI
+bunx @boris.barac/linkloom search OpenAI --limit 3 -o results.json
+```
+
+| Flag | Description |
+|------|-------------|
+| `-o, --output` | Write output to a file instead of stdout |
+| `--limit` | Maximum number of results to return |
+| `--engine` | Search engine to use (default: `brave`) |
+
 ### `tables <url>`
 
 Extract HTML tables from a web page as markdown.

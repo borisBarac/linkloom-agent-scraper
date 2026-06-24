@@ -3,6 +3,8 @@ export * as htmlConverter from "./scraper/data_processing/conversion/html_conver
 export * as pdfConverter from "./scraper/data_processing/conversion/pdf_converter";
 export * as linkExtraction from "./scraper/data_processing/extraction/link_extraction";
 export * as tableExtraction from "./scraper/data_processing/extraction/table_extraction";
+export * as webSearch from "./scraper/data_processing/extraction/web_search";
+export * from "./scraper/data_processing/extraction/web_search";
 export { convertLinkToMarkdown } from "./scraper/link_to_markdown";
 export * as renderers from "./scraper/renderers";
 export {

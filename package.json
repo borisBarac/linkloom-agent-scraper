@@ -1,7 +1,7 @@
 {
   "name": "@boris.barac/linkloom",
   "version": "0.1.3",
-  "description": "Web scraping, content extraction, and markdown conversion — in TypeScript/Bun",
+  "description": "Web scraping, Brave search, content extraction, and markdown conversion — in TypeScript/Bun",
   "type": "module",
   "main": "index.ts",
   "module": "index.ts",
@@ -68,7 +68,9 @@
     "@mozilla/readability": "^0.6.0",
     "axios": "^1.15.2",
     "camoufox-js": "^0.10.2",
+    "cheerio": "^1.2.0",
     "citty": "^0.2.2",
+    "impit": "^0.14.2",
     "jsdom": "^29.0.2",
     "pdf.js-extract": "^1.0.1",
     "playwright": "^1.59.1",

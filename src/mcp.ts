@@ -7,15 +7,20 @@ import { registerLinksTool } from "./mcp/tools/links";
 import { registerPdfTool } from "./mcp/tools/pdf";
 import { registerRenderTool } from "./mcp/tools/render";
 import { registerScrapeTool } from "./mcp/tools/scrape";
+import { registerSearchTool } from "./mcp/tools/search";
 import { registerTablesTool } from "./mcp/tools/tables";
 
-const server = new McpServer({ name: "@boris.barac/linkloom", version: pkg.version });
+const server = new McpServer({
+  name: "@boris.barac/linkloom",
+  version: pkg.version,
+});
 
 registerScrapeTool(server);
 registerHtmlTool(server);
 registerPdfTool(server);
 registerRenderTool(server);
 registerLinksTool(server);
+registerSearchTool(server);
 registerTablesTool(server);
 
 const transport = new StdioServerTransport();
@@ -31,7 +36,7 @@ console.error(
     "  Test with MCP Inspector :",
     "    npx @modelcontextprotocol/inspector bun run src/mcp.ts",
     "",
-    "  Tools : scrape, html_to_markdown, pdf_to_markdown, render_page, extract_links, extract_tables",
+    "  Tools : scrape, html_to_markdown, pdf_to_markdown, render_page, extract_links, search_web, extract_tables",
     "",
   ].join("\n"),
 );

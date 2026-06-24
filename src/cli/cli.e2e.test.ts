@@ -96,6 +96,7 @@ describe("root command", () => {
     expect(result.stdout).toContain("html");
     expect(result.stdout).toContain("pdf");
     expect(result.stdout).toContain("render");
+    expect(result.stdout).toContain("search");
     expect(result.stdout).toContain("links");
     expect(result.stdout).toContain("tables");
     expect(result.stdout).toContain("mcp");
@@ -114,6 +115,7 @@ describe("subcommand help", () => {
     "html",
     "pdf",
     "render",
+    "search",
     "links",
     "tables",
     "mcp",

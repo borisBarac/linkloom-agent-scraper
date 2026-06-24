@@ -21,6 +21,7 @@ The server communicates over stdio — it reads JSON-RPC from stdin and writes r
 | `pdf_to_markdown` | Convert a local PDF file to markdown |
 | `render_page` | Render a URL with a headless browser and return HTML |
 | `extract_links` | Extract URLs from text, or PDF download links from HTML |
+| `search_web` | Search the web with Brave and return structured results |
 | `extract_tables` | Extract HTML tables from a web page as markdown |
 
 ## Usage
