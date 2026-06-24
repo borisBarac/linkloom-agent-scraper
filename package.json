@@ -52,7 +52,7 @@
     "start": "bun run index.ts",
     "cli": "bun run src/cli.ts",
     "mcp": "bun run src/cli.ts mcp",
-    "setup:browser": "camoufox-js fetch",
+    "setup:browser": "camoufox-js fetch && bun scripts/setup-camoufox.mjs",
     "browser:path": "camoufox-js path"
   },
   "devDependencies": {

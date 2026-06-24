@@ -199,6 +199,7 @@ describe("MCP server", () => {
       "pdf_to_markdown",
       "render_page",
       "scrape",
+      "search_web",
     ]);
   });
 

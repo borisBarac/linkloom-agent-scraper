@@ -32,7 +32,7 @@ bun add @boris.barac/linkloom
 > bunx camoufox-js fetch
 > ```
 >
-> When developing from this repo, use `bun run setup:browser`. See `bun run browser:path` to find where it was installed.
+> When developing from this repo, use `bun run setup:browser`. On macOS, this also re-signs the downloaded app bundle so Camoufox can launch. See `bun run browser:path` to find where it was installed.
 
 ## CLI Usage (via bunx)
 
@@ -75,6 +75,6 @@ cp env.example .env
 | `bun run mcp` | Run the MCP server |
 | `bun run check` | Format + lint (biome) |
 | `bun run type_check` | TypeScript type check |
-| `bun run setup:browser` | Download the Camoufox browser + GeoIP DB (required once before scraping) |
+| `bun run setup:browser` | Download the Camoufox browser + GeoIP DB and re-sign the app bundle on macOS |
 | `bun run browser:path` | Print the local Camoufox install path |
 | `bun test` | Run tests |
