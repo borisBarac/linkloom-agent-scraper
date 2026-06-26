@@ -1,6 +1,6 @@
 {
   "name": "@boris.barac/linkloom",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Web scraping, Brave search, content extraction, and markdown conversion — in TypeScript/Bun",
   "type": "module",
   "main": "index.ts",
