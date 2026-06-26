@@ -45,6 +45,8 @@
     "linkloom-mcp": "src/mcp.ts"
   },
   "scripts": {
+    "test": "bun scripts/test-isolated.mjs",
+    "test:aggregate": "bun test",
     "format": "bunx biome format --write",
     "lint": "bunx biome lint --write",
     "check": "bunx biome check --write",

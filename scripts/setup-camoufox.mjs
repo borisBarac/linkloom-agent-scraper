@@ -37,6 +37,14 @@ execFileSync("codesign", ["--force", "--deep", "--sign", "-", appPath], {
   stdio: "inherit",
 });
 
+execFileSync(
+  "codesign",
+  ["--verify", "--deep", "--strict", "--verbose=2", appPath],
+  {
+    stdio: "inherit",
+  },
+);
+
 execFileSync(executablePath, ["--version"], {
   stdio: "inherit",
 });
