@@ -1,8 +1,7 @@
-import type { Browser } from "playwright";
 import { FRAME_TIMEOUT, PAGE_LOAD_TIMEOUT } from "../app_config";
 import { cleanHtmlToMarkdown } from "./data_processing/conversion/html_converter";
 import { convertPdfToMarkdown } from "./data_processing/conversion/pdf_converter";
-import { initialize, renderPage } from "./renderers/renderer";
+import { renderPage, withBrowser } from "./renderers/renderer";
 import { ScrapperError } from "./types/internal";
 import { downloadFileAsBuffer } from "./util/file_manager";
 
@@ -17,18 +16,17 @@ export const isPdfUrl = (url: string): boolean => {
 };
 
 const processHtmlUrl = async (url: string): Promise<string> => {
-  let browser: Browser | null = null;
   try {
-    browser = await initialize();
-
-    const renderResult = await renderPage(browser, url, {
-      timeout: PAGE_LOAD_TIMEOUT,
-      waitUntil: "domcontentloaded",
-      frames: {
-        enabled: false,
-        timeout: FRAME_TIMEOUT,
-      },
-    });
+    const renderResult = await withBrowser(async (browser) =>
+      renderPage(browser, url, {
+        timeout: PAGE_LOAD_TIMEOUT,
+        waitUntil: "domcontentloaded",
+        frames: {
+          enabled: false,
+          timeout: FRAME_TIMEOUT,
+        },
+      }),
+    );
 
     let htmlContent: string;
     if (typeof renderResult === "string") {
@@ -79,10 +77,6 @@ const processHtmlUrl = async (url: string): Promise<string> => {
       "ERR_HTTP_REQUEST_FAILED",
       `Failed to process HTML URL: ${errorMessage}`,
     );
-  } finally {
-    if (browser) {
-      await browser.close();
-    }
   }
 };
 

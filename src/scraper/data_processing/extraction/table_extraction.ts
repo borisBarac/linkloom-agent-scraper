@@ -1,4 +1,5 @@
 import type { Browser, Page } from "playwright";
+import { closePageQuietly } from "../../renderers/renderer";
 
 export type TableData = { [header: string]: string };
 
@@ -51,9 +52,7 @@ export const extractTableData = async (
     await page.goto(url, { waitUntil: "networkidle" });
     return await extractTableDataFromPage(page, tableSelector);
   } finally {
-    if (page && typeof page.close === "function") {
-      await page.close();
-    }
+    await closePageQuietly(page);
   }
 };
 

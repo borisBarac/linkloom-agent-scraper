@@ -3,7 +3,7 @@ import {
   extractTableData,
   tableDataToMarkdownTable,
 } from "../../scraper/data_processing/extraction/table_extraction";
-import { initialize } from "../../scraper/renderers/renderer";
+import { withBrowser } from "../../scraper/renderers/renderer";
 import { writeOutput } from "../output";
 
 export default defineCommand({
@@ -31,13 +31,13 @@ export default defineCommand({
   async run(ctx) {
     const { url, output, selector } = ctx.args;
 
-    let browser: import("playwright").Browser | undefined;
     try {
-      browser = await initialize();
-      const data = await extractTableData(
-        browser,
-        url as string,
-        (selector as string) ?? "table",
+      const data = await withBrowser((browser) =>
+        extractTableData(
+          browser,
+          url as string,
+          (selector as string) ?? "table",
+        ),
       );
       const markdown = tableDataToMarkdownTable(data);
       await writeOutput(markdown, output);
@@ -46,10 +46,6 @@ export default defineCommand({
         `Error: ${error instanceof Error ? error.message : String(error)}`,
       );
       process.exit(1);
-    } finally {
-      if (browser) {
-        await browser.close();
-      }
     }
   },
 });

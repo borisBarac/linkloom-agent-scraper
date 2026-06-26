@@ -37,6 +37,8 @@ bunx camoufox-js fetch
 
 When developing from this repo, use `bun run setup:browser`. On macOS, that command also re-signs the downloaded app bundle so Camoufox can launch.
 
+If Camoufox aborts with `SIGABRT` in the Codex macOS sandbox, re-run browser-backed verification outside the sandbox. In this repo, `bun run setup:browser` was also used to repair/re-sign the local Camoufox install before verification.
+
 Use `bun run browser:path` to print the installed Camoufox path.
 
 ## CLI Usage (via bunx)

@@ -1,7 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { Browser } from "playwright";
 import { z } from "zod";
-import { initialize, renderPage } from "../../scraper/renderers/renderer";
+import { renderPage, withBrowser } from "../../scraper/renderers/renderer";
 
 export const registerRenderTool = (server: McpServer): void => {
   server.registerTool(
@@ -30,14 +29,14 @@ export const registerRenderTool = (server: McpServer): void => {
       annotations: { readOnlyHint: true, openWorldHint: true },
     },
     async ({ url, timeout, waitUntil, selector }) => {
-      let browser: Browser | undefined;
       try {
-        browser = await initialize();
-        const result = await renderPage(browser, url, {
-          timeout: timeout ?? 10000,
-          waitUntil: waitUntil ?? "domcontentloaded",
-          frames: { enabled: false },
-        });
+        const result = await withBrowser((browser) =>
+          renderPage(browser, url, {
+            timeout: timeout ?? 10000,
+            waitUntil: waitUntil ?? "domcontentloaded",
+            frames: { enabled: false },
+          }),
+        );
 
         let html: string;
         if (typeof result === "string") {
@@ -71,10 +70,6 @@ export const registerRenderTool = (server: McpServer): void => {
           content: [{ type: "text", text: `Render failed: ${message}` }],
           isError: true,
         };
-      } finally {
-        if (browser) {
-          await browser.close();
-        }
       }
     },
   );

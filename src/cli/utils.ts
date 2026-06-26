@@ -1,4 +1,4 @@
-import { initialize, renderPage } from "../scraper/renderers/renderer";
+import { renderPage, withBrowser } from "../scraper/renderers/renderer";
 
 export async function renderUrlToHtml(
   url: string,
@@ -7,8 +7,7 @@ export async function renderUrlToHtml(
     waitUntil?: "domcontentloaded" | "load" | "networkidle";
   },
 ): Promise<string> {
-  const browser = await initialize();
-  try {
+  return await withBrowser(async (browser) => {
     const result = await renderPage(browser, url, {
       timeout: options?.timeout ?? 10000,
       waitUntil: options?.waitUntil ?? "domcontentloaded",
@@ -19,7 +18,5 @@ export async function renderUrlToHtml(
       return result;
     }
     return result.mainContent;
-  } finally {
-    await browser.close();
-  }
+  });
 }

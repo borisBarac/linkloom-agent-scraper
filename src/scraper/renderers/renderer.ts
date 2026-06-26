@@ -1,6 +1,6 @@
 import { Camoufox } from "camoufox-js";
 import type { Browser, Frame, Page } from "playwright";
-import { PROXY_URL } from "../../app_config";
+import { DEBUG_MODE, PROXY_URL } from "../../app_config";
 
 type LoadState = "domcontentloaded" | "load" | "networkidle" | "commit";
 
@@ -34,6 +34,11 @@ type RenderResult = {
   mainContent: string;
   frames: FrameContent[];
   frameCount: number;
+};
+
+const expectsNetworkResponse = (url: string): boolean => {
+  const protocol = new URL(url).protocol;
+  return protocol === "http:" || protocol === "https:";
 };
 
 const waitForAllIframes = async (
@@ -117,11 +122,56 @@ const waitForAllIframes = async (
 
 export const initialize = async (proxy?: string): Promise<Browser> => {
   const resolvedProxy = proxy ?? PROXY_URL;
-  const browserInstance = await Camoufox({
+  return await Camoufox({
     headless: true,
     ...(resolvedProxy ? { proxy: resolvedProxy } : {}),
   });
-  return browserInstance;
+};
+
+export const closeBrowserQuietly = async (
+  browserInstance?: Pick<Browser, "close"> | null,
+): Promise<void> => {
+  if (!browserInstance || typeof browserInstance.close !== "function") {
+    return;
+  }
+
+  try {
+    await browserInstance.close();
+  } catch (error) {
+    if (DEBUG_MODE) {
+      console.debug("Failed to close browser during cleanup:", error);
+    }
+    // Cleanup failures should not hide the operation result or primary error.
+  }
+};
+
+export const closePageQuietly = async (
+  page?: Pick<Page, "close"> | null,
+): Promise<void> => {
+  if (!page || typeof page.close !== "function") {
+    return;
+  }
+
+  try {
+    await page.close();
+  } catch (error) {
+    if (DEBUG_MODE) {
+      console.debug("Failed to close page during cleanup:", error);
+    }
+    // Cleanup failures should not hide the operation result or primary error.
+  }
+};
+
+export const withBrowser = async <T>(
+  callback: (browserInstance: Browser) => Promise<T>,
+  proxy?: string,
+): Promise<T> => {
+  const browserInstance = await initialize(proxy);
+  try {
+    return await callback(browserInstance);
+  } finally {
+    await closeBrowserQuietly(browserInstance);
+  }
 };
 
 export const renderPage = async (
@@ -142,13 +192,15 @@ export const renderPage = async (
       waitUntil: options.waitUntil ?? "networkidle",
     });
 
-    if (!response) {
+    if (!response && expectsNetworkResponse(url)) {
       throw new Error("No response received");
     }
 
-    const status = response.status();
-    if (status >= 400) {
-      throw new Error(`HTTP ${status}: ${response.statusText()}`);
+    if (response) {
+      const status = response.status();
+      if (status >= 400) {
+        throw new Error(`HTTP ${status}: ${response.statusText()}`);
+      }
     }
 
     if (!frameOptions.enabled) {
@@ -180,6 +232,6 @@ export const renderPage = async (
       frameCount: frameContents.length,
     };
   } finally {
-    await page.close();
+    await closePageQuietly(page);
   }
 };

@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync } from "node:fs";
 import fsPromises from "node:fs/promises";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import axios from "axios";
 import { PDF_DOWNLOAD_TIMEOUT, TEMP_DIR_PATH } from "../../app_config";
 
@@ -22,6 +23,12 @@ export const downloadFileAsBuffer = async (
   url: string,
 ): Promise<Buffer | undefined> => {
   try {
+    const parsedUrl = new URL(url);
+
+    if (parsedUrl.protocol === "file:") {
+      return await fsPromises.readFile(fileURLToPath(parsedUrl));
+    }
+
     const response = await axios.get(url, {
       responseType: "arraybuffer", // Crucial to get ArrayBuffer back
       timeout: PDF_DOWNLOAD_TIMEOUT,

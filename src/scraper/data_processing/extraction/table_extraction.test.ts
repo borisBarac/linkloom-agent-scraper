@@ -297,7 +297,7 @@ describe("extractTableData", () => {
     // Should not throw error when trying to close
   });
 
-  test("should propagate page.close failure", async () => {
+  test("should ignore page.close failure after successful extraction", async () => {
     const mockTableData: TableData[] = [{ Test: "Data" }];
 
     const mockPage = {
@@ -310,10 +310,31 @@ describe("extractTableData", () => {
       newPage: mock().mockResolvedValue(mockPage),
     } as unknown as Browser;
 
-    // Should throw error when close fails since it's in finally block
+    const result = await extractTableData(
+      mockBrowser,
+      "https://example.com",
+      "table",
+    );
+
+    expect(result).toEqual(mockTableData);
+    expect(mockPage.close).toHaveBeenCalledTimes(1);
+  });
+
+  test("should preserve extraction error when page.close also fails", async () => {
+    const mockPage = {
+      goto: mock().mockResolvedValue(undefined),
+      evaluate: mock().mockRejectedValue(new Error("Extraction failed")),
+      close: mock().mockRejectedValue(new Error("Failed to close")),
+    } as unknown as Page;
+
+    const mockBrowser = {
+      newPage: mock().mockResolvedValue(mockPage),
+    } as unknown as Browser;
+
     await expect(
       extractTableData(mockBrowser, "https://example.com", "table"),
-    ).rejects.toThrow("Failed to close");
+    ).rejects.toThrow("Extraction failed");
+    expect(mockPage.close).toHaveBeenCalledTimes(1);
   });
 
   test("should return empty array when no tables found", async () => {
